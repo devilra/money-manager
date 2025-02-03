@@ -8,7 +8,7 @@ const App = () => {
   const [amount, setAmount] = useState("");
   const [balance, setBalance] = useState(50000);
   const [income, setIncome] = useState(60000);
-  const [expenses, setExpenses] = useState(80000);
+  const [expenses, setExpenses] = useState(0);
   const [loading, setLoading] = useState(false);
 
   console.log(transaction);
