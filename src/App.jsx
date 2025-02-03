@@ -14,6 +14,9 @@ const App = () => {
   console.log(transaction);
 
   const handleTransaction = (type) => {
+    if (!title || !amount) {
+      return alert("All fields are required");
+    }
     const amt = parseFloat(amount);
     if (isNaN(amt) || amt <= 0 || (type === "Expense" && amt > balance)) return;
     setLoading(true);
@@ -81,8 +84,13 @@ const App = () => {
               <input
                 type="number"
                 placeholder="Enter amount"
+                maxLength={6}
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e) => {
+                  if (amount.length < 6) {
+                    setAmount(e.target.value);
+                  }
+                }}
                 className="my-2 py-2 focus:outline-none pl-2 font-mono border border-blue-200 w-full rounded "
               />
               <button
