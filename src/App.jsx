@@ -15,8 +15,7 @@ const App = () => {
 
   const handleTransaction = (type) => {
     const amt = parseFloat(amount);
-    if (isNaN(amt) || amt <= 0 || (type === "Expensse" && amt > balance))
-      return;
+    if (isNaN(amt) || amt <= 0 || (type === "Expense" && amt > balance)) return;
     setLoading(true);
     setTimeout(() => {
       const amountHistory = { title, amount: amt, type };
@@ -111,7 +110,15 @@ const App = () => {
                       >
                         <span>{t.title}</span>
                         <span>{t.amount}</span>
-                        <span>{t.type}</span>
+                        <span
+                          className={`${
+                            t.type === "Income"
+                              ? "text-green-600"
+                              : "text-red-700"
+                          }`}
+                        >
+                          {t.type}
+                        </span>
                       </li>
                     ))}
                     <h1 className="text-center mt-5 text-slate-500">End....</h1>
