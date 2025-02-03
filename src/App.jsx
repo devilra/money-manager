@@ -10,6 +10,7 @@ const App = () => {
   const [income, setIncome] = useState(60000);
   const [expenses, setExpenses] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   console.log(transaction);
 
@@ -19,6 +20,13 @@ const App = () => {
     }
     const amt = parseFloat(amount);
     if (isNaN(amt) || amt <= 0 || (type === "Expense" && amt > balance)) return;
+    if (amt > 999999) {
+      return setError("Max amount reached");
+    }
+    if (amt < 0) {
+      return setError("Enter positive amount");
+    }
+
     setLoading(true);
     setTimeout(() => {
       const amountHistory = { title, amount: amt, type };
@@ -36,6 +44,10 @@ const App = () => {
       }
     }, 2000);
   };
+  const errorReset = () => {
+    setAmount("");
+    setError("");
+  };
   return (
     <div>
       {loading && (
@@ -51,6 +63,14 @@ const App = () => {
           <h1 className="text-md md:text-lg text-gray-700 font-mono px-5">
             Welcome back to money manager
           </h1>
+          {error && (
+            <p className="bg-red-500 flex justify-between text-[15px] text-white py-1 px-5 font-bold my-2">
+              {error}
+              <button onClick={errorReset} className="mx-5 text-rose-200">
+                ok
+              </button>
+            </p>
+          )}
           <div className="flex flex-col md:mt-3 justify-center items-center md:flex md:flex-row md:space-x-4 ">
             <CartBox
               title="Your Balance"
@@ -86,13 +106,10 @@ const App = () => {
                 placeholder="Enter amount"
                 maxLength={6}
                 value={amount}
-                onChange={(e) => {
-                  if (amount.length < 6) {
-                    setAmount(e.target.value);
-                  }
-                }}
+                onChange={(e) => setAmount(e.target.value)}
                 className="my-2 py-2 focus:outline-none pl-2 font-mono border border-blue-200 w-full rounded "
               />
+
               <button
                 onClick={() => handleTransaction("Income")}
                 className="w-full md:w-1/3 bg-blue-400 py-2 md:mx-2  rounded-full my-2 md:px-2 text-white font-semibold md:rounded-md text-[13px] hover:bg-blue-500"
